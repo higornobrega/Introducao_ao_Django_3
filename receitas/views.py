@@ -1,8 +1,10 @@
 from django.shortcuts import get_object_or_404, render, get_list_or_404
 from .models import Receita
 def index(request):
-    receita = Receita.objects.all()
-   
+    receita = Receita.objects.order_by('-date_receita').filter(publicada=True) 
+    #order_by('-date_receita') => Ordena por date_receita
+    #   - => Da ultima postada para a primeira
+    #filter(publicada=True) => filtra/pega/mostra apenas quando a publicada=True
     dados = {
         'receitas': receita
     }
