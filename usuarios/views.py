@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib import auth
+from django.contrib import auth, messages
 from receitas.models import Receita
 
 
@@ -18,15 +18,15 @@ def cadastro(request):
             print("O campo nome não pode ficar em Branco")
             return redirect("cadastro")
         if senha != senha2:
-            print("Senha diferente da confimação")
+            messages.error(request, 'As senhas não são iguais')
             return redirect("cadastro")
         if User.objects.filter(email=email).exists():
-            print("Usuário já cadastrado")
+            messages.success(request, 'Usuário cadastrado com sucesso')
             return redirect("cadastro")
 
         user = User.objects.create_user(username=nome, email=email, password=senha)
         user.save()
-        print("Usuario cadastrado")
+        messages.success(request, 'Usuário cadastrado com sucesso')
         return redirect("login")
     else:
         return render(request, "usuarios/cadastro.html")
